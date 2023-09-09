@@ -15,7 +15,6 @@
 	body {
 		font-family: sans-serif;
 		user-select: none;
-		overflow:hidden;
 		place-items:center;
 		min-block-size: 100%;
 		min-height: 100vh;
@@ -43,13 +42,11 @@
 	}
 	
 	#codeForm h2 {
-			font-weight: 300;
-	 
+		font-weight: 400;
 	}
 	
 	.shrinkable {
 		transition: transform 100ms linear;
-	
 	}
 	
 	.shrinkable.shrink {
@@ -115,7 +112,7 @@
 			border: none;
 			background-color: transparent;
 			font-family: inherit;
-		text-transform: uppercase;
+			text-transform: uppercase;
 			color: inherit;
 			cursor: pointer;
 			z-index: 2;
@@ -236,13 +233,7 @@
 	border-radius: 8px;
 	overflow: hidden;
 }
-	.shrinkable {
-		transition: transform 100ms linear;
-		border:1px solid grey;
-		border-radius: 10px;
-		padding: 0.5rem;
-		width: 90%;
-	}
+
 	#code input {
 			font-size: 36px;
 			width: 30px;
@@ -272,13 +263,15 @@
 	}
 }
 @media (max-width: 399px) {
-.shrinkable {
-		transition: transform 100ms linear;
-		border:1px solid grey;
-		border-radius: 10px;
-		padding: 0.5rem;
-		margin-left: 1px;
+	#codeForm {
+			z-index: 40;
+			text-align: center;
+			max-width: 1000px;
+			font-size: 20px;
+			border: 1px solid #ddd;
+			border-radius: 10px
 	}
+
 	#code input {
 			font-size: 36px;
 			width: 30px;
@@ -298,7 +291,7 @@
 		<section id="codeForm">
 			<form action="">
 				<h2>Введите SMS-код</h2>
-				<div id="code" class="shri	nkable">
+				<div id="code" class="shrinkable">
 						<input disabled type="text"
 						/><input disabled type="text"
 						/><input disabled type="text"
