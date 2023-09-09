@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Code Verification</title>
+
+<style>
+
+	html {
+		block-size: 100%;
+		color-scheme: dark light;
+	}
+	
+	body {
+		font-family: sans-serif;
+		user-select: none;
+		overflow:hidden;
+		place-items:center;
+		min-block-size: 100%;
+		min-height: 100vh;
+		background: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	form { 
+	position: absolute;
+	inset: 2px;
+	border-radius: 8px;
+	background: #fff;
+	padding: 20px 40px;
+	z-index: 2;
+}
+	#codeForm {
+			z-index: 2;
+			text-align: center;
+			margin: 0 auto;
+			max-width: 1000px;
+			font-size: 20px;
+			border: 1px solid #ddd;
+			border-radius: 10px
+	}
+	
+	#codeForm h2 {
+			font-weight: 300;
+	 
+	}
+	
+	.shrinkable {
+		transition: transform 100ms linear;
+	
+	}
+	
+	.shrinkable.shrink {
+			transform: scale(0.9);
+	}
+	
+	#code {
+			transition: transform 100ms linear;
+	}
+	
+	#code input {
+			font-size: 50px;
+			width: 70px;
+			height: 70px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+	
+	#code input:active,
+	#code input:focus {
+			outline: none;
+			border: 1px solid gray;
+	}
+	
+	#code input.error {
+			border: 1px solid red;
+	}
+	
+	#code input:disabled {
+			color: #222;
+			background-color: #FFFFFF;
+	}
+	
+	#feedback {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			height: 0;
+			overflow: hidden;
+	}
+	
+	#feedbackImage {
+			width: 60px;
+			padding: 30px;
+	}
+	
+	.growable {
+			transform: scale(0.5);
+			opacity: 0;
+			transition: transform 350ms, opacity 350ms;
+			transition-timing-function: cubic-bezier(0.46, 0.03, 0, 1.58);
+	}
+	
+	.growable.grow {
+			opacity: 1;
+			transform: scale(1);
+	}
+	
+	input[type="button"] {
+			outline: none;
+			border: none;
+			background-color: transparent;
+			font-family: inherit;
+		text-transform: uppercase;
+			color: inherit;
+			cursor: pointer;
+			z-index: 2;
+	}
+	
+	#sendButton {
+			padding: 6px 9px;
+			border-radius: 3px;
+			font-size: 20px;
+			border: 1px solid #ddd;
+			z-index: 2;
+	}
+	
+	#sendButton:hover {
+			background-color: rgb(128,128,128, 0.5);
+	}
+	
+	button {
+		background-color:rgb(128,128,128, 0.5);
+		color: #ddd;
+		border: 1px solid #ddd;
+		padding: 10px 30px;
+		margin: 30px;
+		border-radius: 100px;
+		z-index: 2;
+	}
+	button:hover {
+		transform: scale(1.04);
+	}
+	.hidden {
+		display: none;
+	}
+	.box {
+	position: relative;
+	width: 600px;
+	height: 300px;
+	background: #cbc9c9;
+	border-radius: 8px;
+	overflow: hidden;
+}
+.box::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 390px;
+	height: 490px;
+	background: linear-gradient(30deg, transparent, transparent, #45f3ff, #45f3ff, #45f3ff);
+	transform-origin: bottom right;
+	animation: animate 6s linear infinite;
+	z-index: 1;
+}
+.box::after {
+	content: '';
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 390px;
+	height: 400px;
+	background: linear-gradient(30deg, transparent, transparent, #45f3ff, #45f3ff, #45f3ff);
+	transform-origin: bottom right;
+	animation: animate 6s linear infinite;
+	animation-delay: -5s;
+	z-index: 1;
+}
+@keyframes animate {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.boxLine {
+	position: absolute;
+	top: 0;
+	inset: 0;
+	z-index: 1;
+}
+.boxLine::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	width: 390px;
+	height: 490px;
+	background: linear-gradient(30deg, transparent, transparent, #ff01b3, #ff01b3, #ff01b3);
+	transform-origin: bottom right;
+	animation: animate 6s linear infinite;
+	animation-delay: -3s;
+	z-index: 1;
+}
+
+@media (max-width: 520px) {
+	.box {
+	position: relative;
+	width: 600px;
+	background: #cbc9c9;
+	border-radius: 8px;
+	overflow: hidden;
+}
+#code input {
+			font-size: 50px;
+			width: 40px;
+			height: 40px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+}
+@media (max-width: 357px) {
+	.box {
+	position: relative;
+	width: 600px;
+	height: 300px;
+	background: #cbc9c9;
+	border-radius: 8px;
+	overflow: hidden;
+}
+	.shrinkable {
+		transition: transform 100ms linear;
+		border:1px solid grey;
+		border-radius: 10px;
+		padding: 0.5rem;
+		width: 90%;
+	}
+	#code input {
+			font-size: 36px;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+}
+@media (max-width: 375px) {
+	#code input {
+			font-size: 50px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+	#code input {
+			font-size: 36px;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+}
+@media (max-width: 399px) {
+.shrinkable {
+		transition: transform 100ms linear;
+		border:1px solid grey;
+		border-radius: 10px;
+		padding: 0.5rem;
+		margin-left: 1px;
+	}
+	#code input {
+			font-size: 36px;
+			width: 30px;
+			height: 30px;
+			text-align: center;
+			border: 1px solid #aaa;
+			border-radius: 10px;
+			margin: 8px;
+	}
+}
+	</style>
+
+</head>
+<body>
+	<div class="box">
+		<span class="boxLine"></span>
+		<section id="codeForm">
+			<form action="">
+				<h2>Введите SMS-код</h2>
+				<div id="code" class="shri	nkable">
+						<input disabled type="text"
+						/><input disabled type="text"
+						/><input disabled type="text"
+						/><input disabled type="text"
+				/></div>
+				<div id="feedback">
+						<img class="growable" id="feedbackImage" alt="feedback">
+						<input class="growable" id="sendButton" type="button" value="Ввести код занов"/>
+				</div>
+				<button id="btnreplece">Отправить код еще раз</button>
+			</form>
+		</div>
+</section>  
+</body>
+<script defer>
+	const storedCode = "1111";
+	const codeArea = document.getElementById("code");
+	const codeInputs = document.querySelectorAll("#code input");
+	const feedback = document.getElementById("feedback");
+	const feedbackImage = document.getElementById("feedbackImage");
+	const sendButton = document.getElementById("sendButton");
+	const buttonReset = document.querySelector('button');
+	let userCode;
+	
+	
+	init();
+	
+	function init() {
+			userCode = "";
+			codeInputs[0].disabled = false;
+			codeInputs[0].focus();
+			for (const codeInput of codeInputs) {
+					codeInput.value = "";
+					codeInput.addEventListener("input", (e) => handleInput(e, codeInput));
+			}
+	}
+	
+	
+	
+	function handleInput(e, codeInput) {
+			const val = e.data || "";
+			codeInput.value = val;
+			const isValid = val.length == 1 && parseInt(val) >= 0 && parseInt(val) < 10;
+			if (!isValid) {
+					codeInput.classList.add("error");
+					return;
+			}
+			userCode += parseInt(val);
+			codeInput.classList.remove("error");
+			codeInput.disabled = true;
+			const nextInput = codeInput.nextSibling;
+			if (nextInput) {
+					nextInput.disabled = false;
+					nextInput.focus();
+			} else {
+					codeInput.blur();
+					codeArea.classList.add("shrink");
+					evaluate(userCode);
+			}
+	}
+	
+	
+	async function evaluate(code) {
+			const isValid = await serverSideValidation(code);
+			isValid ? handleSuccess() : handleError();
+	}
+	
+	function handleSuccess() {
+			feedbackImage.src = "https://cdn-icons-png.flaticon.com/512/463/463574.png";
+			feedbackImage.onload = () => {
+					feedbackImage.classList.add("grow");
+					feedback.style.height = "180px";
+					buttonReset.classList.toggle('hidden');
+			};
+	}
+	
+	console.log(window.screen.width)
+	
+	function handleError() {
+			feedbackImage.src = "https://cdn-icons-png.flaticon.com/512/463/463612.png";
+			feedbackImage.classList.add("grow");
+			feedback.style.height = "180px";
+			document.querySelector('.box').style.height = "500px";
+			if(window.screen.width < 520) {
+				document.querySelector('.box').style.height = "600px";
+			}
+			document.querySelector('#btnreplece').addEventListener('click', () => {
+				if (window.screen.width > 520) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if (window.screen.width < 520 && window.screen.width > 347) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if(window.screen.width < 347) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if(window.screen.width < 357) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else {
+					document.querySelector('.box').style.height = "300px";
+				}
+			})
+			document.querySelector('#sendButton').addEventListener('click', () => {
+				if (window.screen.width > 520) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if (window.screen.width < 520 && window.screen.width > 347) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if(window.screen.width < 347) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else if(window.screen.width < 357) {
+					document.querySelector('.box').style.height = "300px";
+				}
+				else {
+					document.querySelector('.box').style.height = "300px";
+				}
+			})
+			setTimeout(() => {
+					sendButton.classList.add("grow");
+			}, 300);
+	}
+	
+	async function serverSideValidation(code) {
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			const response = code === storedCode;
+			return response;
+	}
+	
+	
+	sendButton.addEventListener("click", restoreInputs);
+	
+	function restoreInputs() {
+			userCode = "";
+			feedbackImage.classList.remove("grow");
+			sendButton.classList.remove("grow");
+			for (const codeInput of codeInputs) {
+					codeInput.value = "";
+			}
+			codeArea.classList.remove("shrink");
+			codeInputs[0].disabled = false;
+			codeInputs[0].focus();
+			feedback.style.height = "0px";
+	}
+	</script>
+</html>
